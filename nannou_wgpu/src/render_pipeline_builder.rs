@@ -525,6 +525,7 @@ fn build(
         module: &vs_mod,
         entry_point: vs_entry_point,
         buffers: &vertex_buffers[..],
+        compilation_options: wgpu_upstream::PipelineCompilationOptions::default(),
     };
 
     let mut single_color_state = [Some(RenderPipelineBuilder::DEFAULT_COLOR_STATE)];
@@ -547,6 +548,7 @@ fn build(
             module: &fs_mod,
             entry_point: fs_entry_point,
             targets: color_states,
+            compilation_options: wgpu_upstream::PipelineCompilationOptions::default(),
         }),
         _ => None,
     };
