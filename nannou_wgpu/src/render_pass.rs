@@ -1,3 +1,5 @@
+use wgpu_upstream::StoreOp;
+
 use crate::{self as wgpu, Color, LoadOp};
 
 /// A builder type to simplify the process of creating a render pass descriptor.
@@ -32,7 +34,7 @@ impl<'a> ColorAttachmentDescriptorBuilder<'a> {
                 resolve_target: None,
                 ops: wgpu::Operations {
                     load: LoadOp::Clear(Color::TRANSPARENT),
-                    store: true,
+                    store: StoreOp::Store,
                 },
             },
         }
@@ -57,7 +59,7 @@ impl<'a> ColorAttachmentDescriptorBuilder<'a> {
     }
 
     /// The end-of-pass store operation for this color attachment.
-    pub fn store_op(mut self, store_op: bool) -> Self {
+    pub fn store_op(mut self, store_op: StoreOp) -> Self {
         self.descriptor.ops.store = store_op;
         self
     }
@@ -65,10 +67,10 @@ impl<'a> ColorAttachmentDescriptorBuilder<'a> {
 
 impl<'a> DepthStencilAttachmentDescriptorBuilder<'a> {
     pub const DEFAULT_DEPTH_LOAD_OP: LoadOp<f32> = LoadOp::Clear(Self::DEFAULT_CLEAR_DEPTH);
-    pub const DEFAULT_DEPTH_STORE_OP: bool = true;
+    pub const DEFAULT_DEPTH_STORE_OP: StoreOp = StoreOp::Store;
     pub const DEFAULT_CLEAR_DEPTH: f32 = 1.0;
     pub const DEFAULT_STENCIL_LOAD_OP: LoadOp<u32> = LoadOp::Clear(Self::DEFAULT_CLEAR_STENCIL);
-    pub const DEFAULT_STENCIL_STORE_OP: bool = true;
+    pub const DEFAULT_STENCIL_STORE_OP: StoreOp = StoreOp::Store;
     pub const DEFAULT_CLEAR_STENCIL: u32 = 0;
 
     fn new(attachment: &'a wgpu::TextureViewHandle) -> Self {
@@ -97,7 +99,7 @@ impl<'a> DepthStencilAttachmentDescriptorBuilder<'a> {
     }
 
     /// The end-of-pass store operation for this depth attachment.
-    pub fn depth_store_op(mut self, store: bool) -> Self {
+    pub fn depth_store_op(mut self, store: StoreOp) -> Self {
         self.descriptor.depth_ops = Some(wgpu::Operations {
             load: self.descriptor.depth_ops.expect("no depth ops field").load,
             store,
@@ -119,7 +121,7 @@ impl<'a> DepthStencilAttachmentDescriptorBuilder<'a> {
     }
 
     /// The end-of-pass store operation for this stencil attachment.
-    pub fn stencil_store_op(mut self, store: bool) -> Self {
+    pub fn stencil_store_op(mut self, store: StoreOp) -> Self {
         self.descriptor.stencil_ops = Some(wgpu::Operations {
             load: self
                 .descriptor
@@ -139,13 +141,13 @@ impl<'a> Builder<'a> {
     pub const DEFAULT_CLEAR_COLOR: Color = ColorAttachmentDescriptorBuilder::DEFAULT_CLEAR_COLOR;
     pub const DEFAULT_DEPTH_LOAD_OP: LoadOp<f32> =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_DEPTH_LOAD_OP;
-    pub const DEFAULT_DEPTH_STORE_OP: bool =
+    pub const DEFAULT_DEPTH_STORE_OP: StoreOp =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_DEPTH_STORE_OP;
     pub const DEFAULT_CLEAR_DEPTH: f32 =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_CLEAR_DEPTH;
     pub const DEFAULT_STENCIL_LOAD_OP: LoadOp<u32> =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_STENCIL_LOAD_OP;
-    pub const DEFAULT_STENCIL_STORE_OP: bool =
+    pub const DEFAULT_STENCIL_STORE_OP: StoreOp =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_STENCIL_STORE_OP;
     pub const DEFAULT_CLEAR_STENCIL: u32 =
         DepthStencilAttachmentDescriptorBuilder::DEFAULT_CLEAR_STENCIL;
@@ -213,6 +215,8 @@ impl<'a> Builder<'a> {
             label: Some("nannou_render_pass"),
             color_attachments: &color_attachments,
             depth_stencil_attachment,
+            timestamp_writes: None,
+            occlusion_query_set: None,
         };
         encoder.begin_render_pass(&descriptor)
     }

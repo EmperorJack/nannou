@@ -176,7 +176,7 @@ impl Texture {
     /// The component type associated with the texture's format.
     pub fn sample_type(&self) -> wgpu::TextureSampleType {
         self.format()
-            .sample_type(None)
+            .sample_type(None, None)
             .expect("Expected the format to have a sample type")
     }
 
@@ -375,7 +375,7 @@ impl TextureView {
 
     pub fn sample_type(&self) -> wgpu::TextureSampleType {
         self.format()
-            .sample_type(None)
+            .sample_type(None, None)
             .expect("Expected the format to have a sample type")
     }
 
@@ -762,7 +762,7 @@ pub fn data_size_bytes(desc: &wgpu::TextureDescriptor) -> usize {
 /// Return the size of the given texture format in bytes.
 pub fn format_size_bytes(format: wgpu::TextureFormat) -> u32 {
     format
-        .block_size(None)
+        .block_copy_size(None)
         .expect("Expected the format to have a block size") as u32
 }
 

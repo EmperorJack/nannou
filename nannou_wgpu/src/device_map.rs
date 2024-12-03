@@ -72,7 +72,7 @@ impl AdapterMap {
     /// Returns `None` if there are no available adapters that meet the specified options.
     pub fn get_or_request<'a, 'b>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'a, 'b>,
         instance: &'a wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let rt = tokio::runtime::Handle::current();
@@ -89,7 +89,7 @@ impl AdapterMap {
     /// Returns `None` if there are no available adapters that meet the specified options.
     pub fn request<'a, 'b>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'a, 'b>,
         instance: &'a wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let rt = tokio::runtime::Handle::current();
@@ -99,7 +99,7 @@ impl AdapterMap {
     /// The async implementation of `get_or_request`.
     pub async fn get_or_request_async<'a, 'b>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'a, 'b>,
         instance: &'a wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let power_preference = options.power_preference;
@@ -125,7 +125,7 @@ impl AdapterMap {
     /// The async implementation of `request`.
     pub async fn request_async<'a, 'b>(
         &'a self,
-        options: wgpu::RequestAdapterOptions<'b>,
+        options: wgpu::RequestAdapterOptions<'a, 'b>,
         instance: &'b wgpu::Instance,
     ) -> Option<Arc<ActiveAdapter>> {
         let adapter = instance.request_adapter(&options).await?;
@@ -328,7 +328,9 @@ fn eq_device_descriptor(
     a: &wgpu::DeviceDescriptor<'static>,
     b: &wgpu::DeviceDescriptor<'static>,
 ) -> bool {
-    a.label == b.label && a.features == b.features && a.limits == b.limits
+    a.label == b.label
+        && a.required_features == b.required_features
+        && a.required_limits == b.required_limits
 }
 
 // NOTE: This should be updated as fields are added to the `wgpu::DeviceDescriptor` type.
@@ -337,6 +339,6 @@ where
     H: Hasher,
 {
     desc.label.hash(state);
-    desc.features.hash(state);
-    desc.limits.hash(state);
+    desc.required_features.hash(state);
+    desc.required_limits.hash(state);
 }

@@ -225,7 +225,7 @@ impl<'swap_chain> Frame<'swap_chain> {
     /// before the texture is drawn to the swapchain.
     pub fn color_attachment_descriptor(&self) -> wgpu::RenderPassColorAttachment {
         let load = wgpu::LoadOp::Load;
-        let store = true;
+        let store = wgpu::StoreOp::Store;
         let attachment = match self.render_data.intermediary_lin_srgba.msaa_texture {
             None => &self.render_data.intermediary_lin_srgba.texture_view,
             Some((_, ref msaa_texture_view)) => msaa_texture_view,

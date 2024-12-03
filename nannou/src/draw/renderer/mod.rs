@@ -1053,7 +1053,7 @@ fn create_text_bind_group_layout(device: &wgpu::Device, filtering: bool) -> wgpu
             false,
             wgpu::TextureViewDimension::D2,
             Renderer::GLYPH_CACHE_TEXTURE_FORMAT
-                .sample_type(None)
+                .sample_type(None, None)
                 .expect("Expected format to have sample type"),
         )
         .build(device)

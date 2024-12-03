@@ -18,11 +18,9 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 use std::time::Duration;
 use std::{env, fmt};
-use wgpu_upstream::CompositeAlphaMode;
+use wgpu_upstream::{CompositeAlphaMode, SurfaceTargetUnsafe};
 use winit::dpi::{LogicalSize, PhysicalSize};
 #[cfg(target_os = "macos")]
-use winit::platform::macos::WindowBuilderExtMacOS;
-
 pub use winit::window::Fullscreen;
 pub use winit::window::WindowId as Id;
 use winit::window::{CursorGrabMode, WindowLevel};
@@ -242,7 +240,7 @@ fn_any!(ClosedFn<M>, ClosedFnAny);
 #[derive(Debug)]
 pub struct Window {
     pub(crate) window: winit::window::Window,
-    pub(crate) surface: wgpu::Surface,
+    pub(crate) surface: wgpu::Surface<'static>,
     pub(crate) surface_conf: wgpu::SurfaceConfiguration,
     pub(crate) device_queue_pair: Arc<wgpu::DeviceQueuePair>,
     msaa_samples: u32,
@@ -351,6 +349,7 @@ impl SurfaceConfigurationBuilder {
             present_mode,
             alpha_mode: CompositeAlphaMode::Auto,
             view_formats: Vec::new(),
+            desired_maximum_frame_latency: 2,
         }
     }
 }
@@ -809,7 +808,7 @@ impl<'app> Builder<'app> {
             .or_else(|| {
                 window
                     .window_attributes()
-                    .fullscreen
+                    .fullscreen()
                     .as_ref()
                     .and_then(|fullscreen| match fullscreen {
                         Fullscreen::Exclusive(video_mode) => {
@@ -863,14 +862,14 @@ impl<'app> Builder<'app> {
         // Use the `initial_window_size` as the default dimensions for the window if none
         // were specified.
         if window.window_attributes().inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_inner_size(initial_window_size);
         }
 
         // Set a default minimum window size for configuring the surface.
         if window.window_attributes().min_inner_size.is_none()
-            && window.window_attributes().fullscreen.is_none()
+            && window.window_attributes().fullscreen().is_none()
         {
             window = window.with_min_inner_size(winit::dpi::Size::Physical(MIN_SC_PIXELS));
         }
@@ -916,7 +915,10 @@ impl<'app> Builder<'app> {
         // Build the wgpu surface.
         let surface = unsafe {
             app.instance()
-                .create_surface(&window)
+                .create_surface_unsafe(
+                    SurfaceTargetUnsafe::from_window(&window)
+                        .expect("Could not create surface target from window"),
+                )
                 .expect("Could not create surface")
         };
 
@@ -1219,7 +1221,7 @@ impl Window {
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_pixels(&self, width: u32, height: u32) {
         self.window
-            .set_inner_size(winit::dpi::PhysicalSize { width, height })
+            .request_inner_size(winit::dpi::PhysicalSize { width, height });
     }
 
     /// Modifies the inner size of the window using point values.
@@ -1227,7 +1229,7 @@ impl Window {
     /// See the `inner_size` methods for more informations about the values.
     pub fn set_inner_size_points(&self, width: f32, height: f32) {
         self.window
-            .set_inner_size(winit::dpi::LogicalSize { width, height })
+            .request_inner_size(winit::dpi::LogicalSize { width, height });
     }
 
     /// The width and height of the window in pixels.
@@ -1384,16 +1386,16 @@ impl Window {
         self.window.set_window_icon(window_icon)
     }
 
-    /// Sets the location of IME candidate box in client area coordinates relative to the top left.
-    ///
-    /// ## Platform-specific
-    ///
-    /// - **iOS:** Has no effect.
-    /// - **Web:** Has no effect.
-    pub fn set_ime_position_points(&self, x: f32, y: f32) {
-        self.window
-            .set_ime_position(winit::dpi::LogicalPosition { x, y })
-    }
+    // /// Sets the location of IME candidate box in client area coordinates relative to the top left.
+    // ///
+    // /// ## Platform-specific
+    // ///
+    // /// - **iOS:** Has no effect.
+    // /// - **Web:** Has no effect.
+    // pub fn set_ime_position_points(&self, x: f32, y: f32) {
+    //     self.window
+    //         .set_ime_position(winit::dpi::LogicalPosition { x, y })
+    // }
 
     /// Modifies the mouse cursor of the window.
     ///

@@ -90,14 +90,14 @@ pub use wgpu_upstream::{
     RenderPipelineDescriptor, RequestAdapterOptions, RequestAdapterOptionsBase, RequestDeviceError,
     Sampler, SamplerBorderColor, SamplerDescriptor, ShaderLocation, ShaderModel, ShaderModule,
     ShaderModuleDescriptor, ShaderSource, ShaderStages, StencilFaceState, StencilOperation,
-    StencilState, StorageTextureAccess, Surface, SurfaceConfiguration, SurfaceError, SurfaceStatus,
-    SurfaceTexture, Texture as TextureHandle, TextureAspect, TextureDescriptor, TextureDimension,
-    TextureFormat, TextureFormatFeatureFlags, TextureFormatFeatures, TextureSampleType,
-    TextureUsages, TextureView as TextureViewHandle, TextureViewDescriptor, TextureViewDimension,
-    UncapturedErrorHandler, VertexAttribute, VertexBufferLayout, VertexFormat, VertexState,
-    VertexStepMode, COPY_BUFFER_ALIGNMENT, COPY_BYTES_PER_ROW_ALIGNMENT, MAP_ALIGNMENT,
-    PUSH_CONSTANT_ALIGNMENT, QUERY_RESOLVE_BUFFER_ALIGNMENT, QUERY_SET_MAX_QUERIES, QUERY_SIZE,
-    VERTEX_STRIDE_ALIGNMENT,
+    StencilState, StorageTextureAccess, StoreOp, Surface, SurfaceConfiguration, SurfaceError,
+    SurfaceStatus, SurfaceTexture, Texture as TextureHandle, TextureAspect, TextureDescriptor,
+    TextureDimension, TextureFormat, TextureFormatFeatureFlags, TextureFormatFeatures,
+    TextureSampleType, TextureUsages, TextureView as TextureViewHandle, TextureViewDescriptor,
+    TextureViewDimension, UncapturedErrorHandler, VertexAttribute, VertexBufferLayout,
+    VertexFormat, VertexState, VertexStepMode, COPY_BUFFER_ALIGNMENT, COPY_BYTES_PER_ROW_ALIGNMENT,
+    MAP_ALIGNMENT, PUSH_CONSTANT_ALIGNMENT, QUERY_RESOLVE_BUFFER_ALIGNMENT, QUERY_SET_MAX_QUERIES,
+    QUERY_SIZE, VERTEX_STRIDE_ALIGNMENT,
 };
 
 /// The default power preference used for requesting the WGPU adapter.
@@ -138,12 +138,12 @@ pub fn clear_texture(
 
 /// The default device descriptor used to instantiate a logical device when creating windows.
 pub fn default_device_descriptor() -> DeviceDescriptor<'static> {
-    let features = Features::default();
-    let limits = Limits::default();
+    let required_features = Features::default();
+    let required_limits = Limits::default();
     DeviceDescriptor {
         label: Some("nannou_device"),
-        features,
-        limits,
+        required_features,
+        required_limits,
     }
 }
 
