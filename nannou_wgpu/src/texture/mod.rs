@@ -78,6 +78,8 @@ pub struct TextureViewInfo {
     ///
     /// If `None`, considered to include the rest of the array layers, but at least 1 in total.
     pub array_layer_count: Option<u32>,
+    /// Sample count.
+    pub sample_count: u32,
 }
 
 /// A unique identifier associated with a **Texture**.
@@ -245,6 +247,7 @@ impl Texture {
             level_count: Some(self.mip_level_count()),
             base_array_layer: 0,
             array_layer_count: Some(1),
+            sample_count: self.sample_count(),
         }
     }
 
