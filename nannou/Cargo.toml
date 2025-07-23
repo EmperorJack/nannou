@@ -1,13 +1,13 @@
 [package]
-name = "nannou"
+name = "visor_nannou"
 version = "0.19.0"
 authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
-description = "A Creative Coding Framework for Rust."
+description = "Forked version of nannou for Visor."
 readme = "README.md"
 keywords = ["creative", "sketch", "graphics", "audio"]
 license = "MIT"
-repository = "https://github.com/nannou-org/nannou.git"
-homepage = "https://github.com/nannou-org/nannou"
+repository = "https://github.com/emperorjack/nannou.git"
+homepage = "https://github.com/emperorjack/nannou"
 edition = "2018"
 
 [dependencies]
@@ -26,7 +26,7 @@ nannou_mesh = { version = "0.19.0", path = "../nannou_mesh", features = [
 ] }
 nannou_wgpu = { version = "0.19.0", path = "../nannou_wgpu", features = [
   "capturer",
-] }
+], package = "visor_nannou_wgpu" }
 noise = "0.7"
 notosans = { version = "0.1", optional = true }
 num_cpus = "1"

@@ -1,5 +1,7 @@
 # `nannou_wgpu`
 
+### ⚠️ This is a forked version of `nannou_wgpu` with upgraded `wgpu` for [Visor](https://github.com/EmperorJack/visor) ⚠️
+
 Items related to wgpu and its integration in nannou!
 
 **WebGPU** is the portable graphics specification that nannou targets allowing

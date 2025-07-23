@@ -2,6 +2,8 @@
 
 ![sdf](https://i.imgur.com/1ldLFfj.png)
 
+### ⚠️ This is a forked version of `nannou` with upgraded `wgpu` for [Visor](https://github.com/EmperorJack/visor) ⚠️
+
 An open-source creative-coding toolkit for Rust.
 
 The `nannou` library allows you to create windows, draw to them, and interact

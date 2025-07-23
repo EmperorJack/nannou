@@ -489,9 +489,9 @@ dependencies = [
 name = "book_tests"
 version = "0.1.0"
 dependencies = [
- "nannou",
  "nannou_osc",
  "skeptic",
+ "visor_nannou",
 ]
 
 [[package]]
@@ -1555,7 +1555,6 @@ dependencies = [
  "hotglsl",
  "hound",
  "hrtf",
- "nannou",
  "nannou_audio",
  "nannou_egui",
  "nannou_isf",
@@ -1565,6 +1564,7 @@ dependencies = [
  "ringbuf",
  "time_calc",
  "tokio 1.35.1",
+ "visor_nannou",
  "walkdir",
 ]
 
@@ -1887,8 +1887,8 @@ dependencies = [
 name = "generative_design"
 version = "0.1.0"
 dependencies = [
- "nannou",
  "usvg",
+ "visor_nannou",
  "wikipedia",
 ]
 
@@ -3256,35 +3256,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nannou"
-version = "0.19.0"
-dependencies = [
- "find_folder",
- "futures 0.3.30",
- "getrandom 0.2.12",
- "image",
- "instant",
- "lyon",
- "nannou_core",
- "nannou_mesh",
- "nannou_wgpu",
- "noise",
- "notosans",
- "num_cpus",
- "pennereq",
- "rusttype",
- "serde",
- "serde_derive",
- "serde_json",
- "tokio 1.35.1",
- "toml",
- "walkdir",
- "web-sys",
- "wgpu 0.20.1",
- "winit 0.29.15",
-]
-
-[[package]]
 name = "nannou_audio"
 version = "0.19.0"
 dependencies = [
@@ -3309,7 +3280,7 @@ version = "0.19.0"
 dependencies = [
  "egui",
  "egui-wgpu",
- "nannou",
+ "visor_nannou",
  "winit 0.28.7",
 ]
 
@@ -3319,9 +3290,9 @@ version = "0.1.0"
 dependencies = [
  "hotglsl",
  "isf",
- "nannou",
  "thiserror",
  "threadpool",
+ "visor_nannou",
  "walkdir",
 ]
 
@@ -3370,18 +3341,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nannou_wgpu"
-version = "0.19.0"
-dependencies = [
- "futures 0.3.30",
- "image",
- "instant",
- "num_cpus",
- "tokio 1.35.1",
- "wgpu 0.20.1",
-]
-
-[[package]]
 name = "native-tls"
 version = "0.2.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3403,7 +3362,7 @@ dependencies = [
 name = "nature_of_code"
 version = "0.1.0"
 dependencies = [
- "nannou",
+ "visor_nannou",
 ]
 
 [[package]]
@@ -6009,6 +5968,47 @@ name = "version_check"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
+
+[[package]]
+name = "visor_nannou"
+version = "0.19.0"
+dependencies = [
+ "find_folder",
+ "futures 0.3.30",
+ "getrandom 0.2.12",
+ "image",
+ "instant",
+ "lyon",
+ "nannou_core",
+ "nannou_mesh",
+ "noise",
+ "notosans",
+ "num_cpus",
+ "pennereq",
+ "rusttype",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tokio 1.35.1",
+ "toml",
+ "visor_nannou_wgpu",
+ "walkdir",
+ "web-sys",
+ "wgpu 0.20.1",
+ "winit 0.29.15",
+]
+
+[[package]]
+name = "visor_nannou_wgpu"
+version = "0.19.0"
+dependencies = [
+ "futures 0.3.30",
+ "image",
+ "instant",
+ "num_cpus",
+ "tokio 1.35.1",
+ "wgpu 0.20.1",
+]
 
 [[package]]
 name = "void"

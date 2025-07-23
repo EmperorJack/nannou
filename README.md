@@ -2,6 +2,8 @@
 
 ![nannou_logo](https://i.imgur.com/1ldLFfj.png)
 
+### ⚠️ This is a forked version of `nannou` with upgraded `wgpu` for [Visor](https://github.com/EmperorJack/visor) ⚠️
+
 An open-source creative-coding toolkit for Rust.
 
 **nannou** is a collection of code aimed at making it easy for artists to
