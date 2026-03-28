@@ -21,6 +21,8 @@ use std::{env, fmt};
 use wgpu_upstream::{CompositeAlphaMode, SurfaceTargetUnsafe};
 use winit::dpi::{LogicalSize, PhysicalSize};
 #[cfg(target_os = "macos")]
+use winit::platform::macos::WindowBuilderExtMacOS;
+
 pub use winit::window::Fullscreen;
 pub use winit::window::WindowId as Id;
 use winit::window::{CursorGrabMode, WindowLevel};
