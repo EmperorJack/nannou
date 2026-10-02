@@ -28,7 +28,7 @@ pub struct MeshBuilder<'a, A> {
 
 pub struct SingleColor(draw::mesh::vertex::Color);
 pub struct ColorPerPoint;
-pub struct TexCoordsPerPoint;
+pub struct TexCoordsPerPoint(draw::mesh::vertex::Color);
 
 impl<'a, A> MeshBuilder<'a, A> {
     /// Begin extending the mesh.
@@ -63,8 +63,16 @@ impl<'a> MeshBuilder<'a, ColorPerPoint> {
 
 impl<'a> MeshBuilder<'a, TexCoordsPerPoint> {
     /// Begin extending a mesh where the path interpolates a unique texture coordinates per point.
-    pub fn tex_coords_per_point(mesh: &'a mut draw::Mesh, transform: Mat4) -> Self {
-        Self::new(mesh, transform, TexCoordsPerPoint)
+    pub fn tex_coords_per_point(
+        mesh: &'a mut draw::Mesh,
+        transform: Mat4,
+        tint: Option<draw::mesh::vertex::Color>,
+    ) -> Self {
+        Self::new(
+            mesh,
+            transform,
+            TexCoordsPerPoint(tint.unwrap_or(draw::mesh::vertex::DEFAULT_VERTEX_COLOR)),
+        )
     }
 }
 
@@ -198,7 +206,7 @@ impl<'a> FillGeometryBuilder for MeshBuilder<'a, TexCoordsPerPoint> {
         let point = self.transform.transform_point3(p);
         let tc = vertex.interpolated_attributes();
         let tex_coords: draw::mesh::vertex::TexCoords = (tc[0], tc[1]).into();
-        let color = draw::mesh::vertex::DEFAULT_VERTEX_COLOR;
+        let TexCoordsPerPoint(color) = self.attributes;
         let vertex = draw::mesh::vertex::new(point, color, tex_coords);
         self.mesh.push_vertex(vertex);
 
@@ -222,7 +230,7 @@ impl<'a> StrokeGeometryBuilder for MeshBuilder<'a, TexCoordsPerPoint> {
         let point = self.transform.transform_point3(p);
         let tc = vertex.interpolated_attributes();
         let tex_coords: draw::mesh::vertex::TexCoords = (tc[0], tc[1]).into();
-        let color = draw::mesh::vertex::DEFAULT_VERTEX_COLOR;
+        let TexCoordsPerPoint(color) = self.attributes;
         let vertex = draw::mesh::vertex::new(point, color, tex_coords);
         self.mesh.push_vertex(vertex);
 

@@ -30,7 +30,11 @@ fn main(
             if (mode == u32(2)) {
                 out_color = vec4<f32>(color.xyz, color.w * text_alpha);
             } else {
-                out_color = vec4<f32>(1.0, 0.0, 0.0, 1.0);
+                if (mode == u32(3)) {
+                    out_color = tex_color * color;
+                } else {
+                    out_color = vec4<f32>(1.0, 0.0, 0.0, 1.0);
+                }
             }
         }
     }

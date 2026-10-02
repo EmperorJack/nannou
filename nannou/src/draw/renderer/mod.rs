@@ -69,6 +69,8 @@ pub enum VertexMode {
     ///
     /// Uses the color values, but multiplies the alpha by the glyph cache texture's red value.
     Text = 2,
+    /// Texture color multiplied by the vertex color for opacity and tint control.
+    TextureTinted = 3,
 }
 
 /// A helper type aimed at simplifying the rendering of nannou primitives via wgpu.
@@ -216,6 +218,13 @@ impl PrimitiveRender {
     pub fn texture(texture_view: wgpu::TextureView) -> Self {
         PrimitiveRender {
             vertex_mode: VertexMode::Texture,
+            texture_view: Some(texture_view),
+        }
+    }
+
+    pub fn texture_tinted(texture_view: wgpu::TextureView) -> Self {
+        PrimitiveRender {
+            vertex_mode: VertexMode::TextureTinted,
             texture_view: Some(texture_view),
         }
     }

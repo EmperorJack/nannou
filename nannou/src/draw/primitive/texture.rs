@@ -13,6 +13,7 @@ pub struct Texture {
     texture_view: wgpu::TextureView,
     spatial: spatial::Properties,
     area: geom::Rect,
+    opacity: f32,
 }
 
 /// The drawing context for a Rect.
@@ -40,6 +41,7 @@ impl Texture {
             texture_view,
             spatial,
             area,
+            opacity: 1.0,
         }
     }
 }
@@ -58,6 +60,11 @@ impl Texture {
         self.area = rect;
         self
     }
+
+    pub fn opacity(mut self, opacity: f32) -> Self {
+        self.opacity = opacity.clamp(0.0, 1.0);
+        self
+    }
 }
 
 impl<'a> DrawingTexture<'a> {
@@ -73,6 +80,10 @@ impl<'a> DrawingTexture<'a> {
     pub fn area(self, rect: geom::Rect) -> Self {
         self.map_ty(|ty| ty.area(rect))
     }
+
+    pub fn opacity(self, opacity: f32) -> Self {
+        self.map_ty(|ty| ty.opacity(opacity))
+    }
 }
 
 impl draw::renderer::RenderPrimitive for Texture {
@@ -85,6 +96,7 @@ impl draw::renderer::RenderPrimitive for Texture {
             texture_view,
             spatial,
             area,
+            opacity,
         } = self;
         let spatial::Properties {
             dimensions,
@@ -119,12 +131,13 @@ impl draw::renderer::RenderPrimitive for Texture {
             true,
             transform,
             path::Options::Fill(Default::default()),
+            Some(draw::mesh::vertex::Color::new(1.0, 1.0, 1.0, opacity)),
             &mut ctxt.fill_tessellator,
             &mut ctxt.stroke_tessellator,
             mesh,
         );
 
-        draw::renderer::PrimitiveRender::texture(texture_view)
+        draw::renderer::PrimitiveRender::texture_tinted(texture_view)
     }
 }
 

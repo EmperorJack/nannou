@@ -425,6 +425,7 @@ pub(crate) fn render_path_points_textured<I>(
     close: bool,
     transform: Mat4,
     options: Options,
+    color: Option<draw::mesh::vertex::Color>,
     fill_tessellator: &mut lyon::tessellation::FillTessellator,
     stroke_tessellator: &mut lyon::tessellation::StrokeTessellator,
     mesh: &mut draw::Mesh,
@@ -437,7 +438,7 @@ pub(crate) fn render_path_points_textured<I>(
     };
 
     // Extend the mesh with the built path.
-    let mut mesh_builder = draw::mesh::MeshBuilder::tex_coords_per_point(mesh, transform);
+    let mut mesh_builder = draw::mesh::MeshBuilder::tex_coords_per_point(mesh, transform, color);
     let res = match options {
         Options::Fill(options) => fill_tessellator.tessellate_with_ids(
             path.id_iter(),
@@ -497,6 +498,7 @@ pub(crate) fn render_path_source(
             close,
             transform,
             options,
+            color,
             fill_tessellator,
             stroke_tessellator,
             mesh,
