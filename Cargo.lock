@@ -5971,7 +5971,7 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 
 [[package]]
 name = "visor_nannou"
-version = "0.19.0-1"
+version = "0.19.0-2"
 dependencies = [
  "find_folder",
  "futures 0.3.30",
@@ -6000,7 +6000,7 @@ dependencies = [
 
 [[package]]
 name = "visor_nannou_wgpu"
-version = "0.19.0"
+version = "0.19.0-2"
 dependencies = [
  "futures 0.3.30",
  "image",

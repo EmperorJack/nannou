@@ -1,6 +1,6 @@
 [package]
 name = "visor_nannou"
-version = "0.19.0-1"
+version = "0.19.0-2"
 authors = ["mitchmindtree <mitchell.nordine@gmail.com>"]
 description = "Forked version of nannou for Visor."
 readme = "README.md"
@@ -24,7 +24,7 @@ nannou_core = { version = "0.19.0", path = "../nannou_core", features = [
 nannou_mesh = { version = "0.19.0", path = "../nannou_mesh", features = [
   "serde1",
 ] }
-nannou_wgpu = { version = "0.19.0", path = "../nannou_wgpu", features = [
+nannou_wgpu = { version = "0.19.0-2", path = "../nannou_wgpu", features = [
   "capturer",
 ], package = "visor_nannou_wgpu" }
 noise = "0.7"
